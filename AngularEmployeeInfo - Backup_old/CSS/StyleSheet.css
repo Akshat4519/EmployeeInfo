@@ -1,0 +1,79 @@
+﻿html, body, h1, form, fieldset, input {
+    margin: 0;
+    padding: 0;
+    border: none;
+}
+
+body {
+    font-family: Helvetica, Arial, sans-serif;
+    font-size: 12px;
+}
+
+table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+tr {
+    font-size: 15px;
+}
+
+    tr td:nth-child(2) { /* I don't think they are 0 based */
+        text-align: left;
+        padding-top: 5px;
+        padding-left: 70px;
+    }
+
+th {
+    height: 50px;
+}
+
+td {
+    text-align: center;
+    padding-bottom: 10px;
+}
+
+#lblEmployees {
+    cursor: pointer;
+}
+
+#registration {
+    color: #fff;
+    background: #2d2d2d;
+    background: -webkit-gradient( linear, left bottom, left top, color-stop(0, rgb(60,60,60)), color-stop(0.74, rgb(43,43,43)), color-stop(1, rgb(60,60,60)) );
+    background: -moz-linear-gradient( center bottom, rgb(60,60,60) 0%, rgb(43,43,43) 74%, rgb(60,60,60) 100% );
+    -moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+    border-radius: 10px;
+    margin: 10px;
+    width: 500px;
+    position: absolute;
+    left: 50%;
+    top: 30%;
+    margin-left: -200px;
+    margin-top: -150px;
+    margin-bottom: 150px;
+    padding-bottom: 10px;
+}
+
+    #registration a {
+        color: #8c910b;
+        text-shadow: 0px -1px 0px #000;
+    }
+
+    #registration fieldset {
+        padding: 20px;
+    }
+
+    #registration h2, table {
+        color: #fff;
+        text-shadow: 0px -1px 0px #000;
+        border-bottom: solid #181818 1px;
+        -moz-box-shadow: 0px 1px 0px #3a3a3a;
+        text-align: center;
+        padding: 18px;
+        margin: 0px;
+        font-weight: normal;
+        font-size: 24px;
+        font-family: Lucida Grande, Helvetica, Arial, sans-serif;
+    }

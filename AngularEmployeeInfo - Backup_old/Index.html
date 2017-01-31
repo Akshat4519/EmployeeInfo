@@ -1,0 +1,62 @@
+﻿<!DOCTYPE html>
+&nbsp;
+<html>
+<head>
+    <title>Employee Info</title>
+    <link href="CSS/StyleSheet.css" rel="stylesheet" />
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.0/jquery.min.js"></script>
+</head>
+
+<body>
+    <div id="registration">
+        <div id="lblEmployees" onclick="show()">
+            <h2 style="text-align:center">Employee Info</h2>
+        </div>
+        <table id="tableEmployees">
+            <thead>
+                <tr style="font-size:18px;">
+                    <th>
+                        Employee Id
+                    </th>
+                    <th>
+                        Employee Name
+                    </th>
+                    <th>
+                        Salary
+                    </th>
+                </tr>
+            </thead>
+        </table>
+    </div>
+    <script>
+        var infoDisplayed = 0;
+        function show() {
+            if (infoDisplayed == 0) {
+                $.ajax({
+                    type: "GET",
+                    url: "http://localhost:50836/Service1.svc/GETDATA",
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: function (msg) {
+                        var table = document.getElementById("tableEmployees");
+
+                        $.each(msg, function (index, element) {
+                            var row = table.insertRow(table.rows.length);
+                            var cell1 = row.insertCell(0);
+                            var cell2 = row.insertCell(1);
+                            var cell3 = row.insertCell(2);
+                            cell1.innerHTML = element.Id;
+                            cell2.innerHTML = element.Name;
+                            cell3.innerHTML = element.Salary;
+                        });
+                    },
+                    error: function (msg) {
+                        alert("Error: " + msg.status + " - " + msg.statusText);
+                    }
+                });
+                infoDisplayed = 1;
+            }
+        }
+    </script>
+</body>
+</html>
