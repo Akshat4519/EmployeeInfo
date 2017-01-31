@@ -88,11 +88,6 @@ td {
     padding-bottom: 10px;
 }
 
-    #registration a {
-        color: #8c910b;
-        text-shadow: 0px -1px 0px #000;
-    }
-
     #registration fieldset {
         padding: 20px;
     }
