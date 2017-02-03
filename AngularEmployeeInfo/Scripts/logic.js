@@ -13,60 +13,67 @@ function displayInfo() {
 }
 
 function addEmployee(rowCount) {
-    rowCount = finalRowCount;
-    var table = document.getElementById("tableEmployees");
-    var currentRow = rowCount - 1;
-    var row = table.insertRow(currentRow);
-    row.style.verticalAlign = "Center";
-    var cell1 = row.insertCell(0);
-    var cell2 = row.insertCell(1);
-    var cell3 = row.insertCell(2);
-    var cell4 = row.insertCell(3);
-    cell1.id = "Cell" + currentRow + "1";
-    //cell1.innerHTML = element.Id;
-    cell2.id = "Cell" + currentRow + "2";
-    //cell2.innerHTML = element.Name;
-    cell3.id = "Cell" + currentRow + "3";
-    //cell3.innerHTML = element.Salary;
-    cell4.id = "Cell" + currentRow + "4";
+    if ($("#newName :input").val() && $("#newSalary :input").val()
+        && jQuery.type($("#newName :input").val())==="string"
+        && jQuery.type($("#newSalary :input").val()) === "number") {
+        rowCount = finalRowCount;
+        var table = document.getElementById("tableEmployees");
+        var currentRow = rowCount - 1;
+        var row = table.insertRow(currentRow);
+        row.style.verticalAlign = "Center";
+        var cell1 = row.insertCell(0);
+        var cell2 = row.insertCell(1);
+        var cell3 = row.insertCell(2);
+        var cell4 = row.insertCell(3);
+        cell1.id = "Cell" + currentRow + "1";
+        cell2.id = "Cell" + currentRow + "2";
+        cell3.id = "Cell" + currentRow + "3";
+        cell4.id = "Cell" + currentRow + "4";
 
-    var cellIdId = "Cell" + currentRow + "1";
-    var cellNameId = "Cell" + currentRow + "2";
-    var cellSalaryId = "Cell" + currentRow + "3";
-    var cellModifyId = "Cell" + currentRow + "4";
-    var btnEditId = "btnEdit" + currentRow;
+        var cellIdId = "Cell" + currentRow + "1";
+        var cellNameId = "Cell" + currentRow + "2";
+        var cellSalaryId = "Cell" + currentRow + "3";
+        var cellModifyId = "Cell" + currentRow + "4";
+        var btnEditId = "btnEdit" + currentRow;
 
-    //var cellId = document.getElementById(cellIdId);
-    //var cellName = document.getElementById(cellNameId);
-    //var cellSalary = document.getElementById(cellSalaryId);
-    //var btnEdit = document.getElementById(btnEditId);
-    //var cellModify = document.getElementById(cellModifyId);
+        $("#" + cellNameId).html($("#newName :input").val());
+        $("#newName :input").val("");
+        $("#" + cellSalaryId).html($("#newSalary :input").val());
+        $("#newSalary :input").val("");
 
-    //var valId = $("#newId").val();
-    //$("#newId").removeChild($("#newId").childNodes[0]);
-    
+        var btnEdit = document.createElement("BUTTON");
+        btnEdit.id = "btnEdit" + currentRow;
+        btnEdit.style.height = "25px";
+        btnEdit.style.width = "55px";
+        btnEdit.style.marginRight = "10px";
+        btnEdit.onclick = function () { editRow(currentRow) };
+        var t = document.createTextNode("Edit");
+        btnEdit.appendChild(t);
+        cell4.appendChild(btnEdit);
 
-    $("#cellNameId").innerHTML = $("#newName").val();
-    $("#newName").text = "";
-    $("#cellSalaryId").innerHTML = $("#newSalary").val();
-    $("#newSalary").text = "";
+        var btnDelete = document.createElement("BUTTON");
+        btnDelete.style.height = "25px";
+        btnDelete.style.width = "55px";
+        var t = document.createTextNode("Delete");
+        btnDelete.appendChild(t);
+        cell4.appendChild(btnDelete);
 
-    var btnEdit = document.createElement("BUTTON");
-    btnEdit.id = "btnEdit" + currentRow;
-    btnEdit.style.height = "25px";
-    btnEdit.style.width = "55px";
-    btnEdit.style.marginRight = "10px";
-    btnEdit.onclick = function () { editRow(currentRow) };
-    var t = document.createTextNode("Edit");
-    btnEdit.appendChild(t);
-    cell4.appendChild(btnEdit);
-
-    var btnDelete = document.createElement("BUTTON");
-    btnDelete.style.height = "25px";
-    btnDelete.style.width = "55px";
-    var t = document.createTextNode("Delete");
-    btnDelete.appendChild(t);
-    cell4.appendChild(btnDelete);
+        finalRowCount++;
+    }
+    else {
+        if (!$("#newName :input").val()) {
+            alert("Please enter the name of the employee..");
+        }
+        else if (!$("#newSalary :input").val()) {
+            alert("Please enter the salary of the employee..");
+        }
+        else if (!jQuery.type($("#newName :input").val()==="string")) {
+            alert("Please enter valid name..");
+        }
+        else if (!jQuery.type($("#newSalary :input").val() === "number")) {
+            alert("Please enter valid salary..");
+        }
+    }
 }
 
 function show() {
@@ -77,7 +84,7 @@ function show() {
             contentType: "application/json; charset=utf-8",
             dataType: "json",
             success: function (msg) {
-                
+
                 var table = document.getElementById("tableEmployees");
 
                 $.each(msg, function (index, element) {
@@ -167,10 +174,12 @@ function saveRow(rowNo) {
     var cellModify = document.getElementById(cellModifyId);
 
     var valName = cellName.childNodes[0].value;
+
+    var valSalary = cellSalary.childNodes[0].value;
+
     cellName.removeChild(cellName.childNodes[0]);
     cellName.innerHTML = valName;
 
-    var valSalary = cellSalary.childNodes[0].value;
     cellSalary.removeChild(cellSalary.childNodes[0]);
     cellSalary.innerHTML = valSalary;
 
@@ -184,15 +193,18 @@ function saveRow(rowNo) {
     $.ajax({
         type: "POST",
         url: "http://localhost:50836/Service1.svc/SaveData",
-        dataType: "json",
         data: JSON.stringify(emp),
         processData: true,
         contentType: 'application/json; charset=utf-8',
-        success: function (data, status, jqXHR) {
-            alert("Employee data modified successfully!");
-        },
-        error: function (msg) {
-            alert("Error saving data: " + msg.status + " - " + msg.statusText);
-        }
+        success: addSucceeded,
+        error: addFailed
     })
+}
+
+function addSucceeded(data, status, jqXHR) {
+    alert("Employee data modified successfully!");
+}
+
+function addFailed(msg) {
+    alert("Error saving data: " + msg.status + " - " + msg.statusText);
 }
