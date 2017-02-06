@@ -1,4 +1,4 @@
-﻿/// <reference path="jquery-3.1.1.min.js" />
+/// <reference path="jquery-3.1.1.min.js" />
 var infoDisplayed = 0;
 var finalRowCount = 0;
 $(document).ready(function () {
@@ -13,9 +13,9 @@ function displayInfo() {
 }
 
 function addEmployee(rowCount) {
-    if ($("#newName :input").val() && $("#newSalary :input").val()
-        && jQuery.type($("#newName :input").val())==="string"
-        && jQuery.type($("#newSalary :input").val()) === "number") {
+    var isValid = validateAddInput();
+
+    if (isValid) {
         rowCount = finalRowCount;
         var table = document.getElementById("tableEmployees");
         var currentRow = rowCount - 1;
@@ -60,20 +60,27 @@ function addEmployee(rowCount) {
 
         finalRowCount++;
     }
-    else {
-        if (!$("#newName :input").val()) {
-            alert("Please enter the name of the employee..");
-        }
-        else if (!$("#newSalary :input").val()) {
-            alert("Please enter the salary of the employee..");
-        }
-        else if (!jQuery.type($("#newName :input").val()==="string")) {
-            alert("Please enter valid name..");
-        }
-        else if (!jQuery.type($("#newSalary :input").val() === "number")) {
-            alert("Please enter valid salary..");
-        }
+}
+
+function validateAddInput() {
+    //if (!$("#newName :input").val()) {
+    //    alert("Please enter the name of the employee..");
+    //    return false;
+    //}
+    //else if (!$("#newSalary :input").val()) {
+    //    alert("Please enter the salary of the employee..");
+    //    return false;
+    //}
+    if (!$("#newName :input").isvalid()) {
+        alert("Please enter the name of the employee..");
+        return false;
     }
+    else if (!$("#newSalary :input").valid()) {
+        alert("Please enter the salary of the employee..");
+        return false;
+    }
+    else
+        return true;
 }
 
 function show() {
@@ -130,6 +137,17 @@ function show() {
         });
         infoDisplayed = 1;
     }
+    //$("#newName :input").blur(function (evt) {
+    //    evt.target.checkValidity();
+    //}).bind("invalid", function (event) {
+    //    alert("Please enter valid name of the employee..");
+    //});
+
+    //$("#newSalary :input").blur(function (evt) {
+    //    evt.target.checkValidity();
+    //}).bind("invalid", function (event) {
+    //    alert("Please enter valid salary of the employee..");
+    //});
 }
 
 function editRow(rowNo) {
