@@ -1,5 +1,6 @@
-/// <reference path="jquery-3.1.1.min.js" />
+﻿/// <reference path="jquery-3.1.1.min.js" />
 var infoDisplayed = 0;
+var toRefresh = 0;
 var finalRowCount = 0;
 $(document).ready(function () {
     this.finalRowCount = $('#tableEmployees').length - 1;
@@ -52,31 +53,65 @@ function addEmployee(rowCount) {
         cell4.appendChild(btnEdit);
 
         var btnDelete = document.createElement("BUTTON");
+        btnDelete.id = "btnDelete" + currentRow;
         btnDelete.style.height = "25px";
         btnDelete.style.width = "55px";
+        btnDelete.onclick = function () { deleteRow(currentRow) };
         var t = document.createTextNode("Delete");
         btnDelete.appendChild(t);
         cell4.appendChild(btnDelete);
 
         finalRowCount++;
+
+        var emp = { 'Name': $("#" + cellNameId).html(), 'Salary': $("#" + cellSalaryId).html() };
+
+        $.ajax({
+            type: "POST",
+            url: "http://localhost:50836/Service1.svc/AddData",
+            data: JSON.stringify(emp),
+            processData: true,
+            contentType: 'application/json; charset=utf-8',
+            success: function (data) {
+                var newId = data.all['0'].textContent;
+                var cellId_previous = "Cell" + currentRow + "1";
+                $('#' + cellId_previous).html(newId);
+
+                $('#inputInfo').css("color", "green");
+                $('#inputInfo').text("* Employee Info added.. *");
+            },
+            error: addFailed
+        })
     }
 }
 
+function addFailed(msg) {
+    $('#inputInfo').css("color", "red");
+    $('#inputInfo').text("Error adding data: " + msg.status + " - " + msg.statusText);
+}
+
 function validateAddInput() {
-    //if (!$("#newName :input").val()) {
-    //    alert("Please enter the name of the employee..");
-    //    return false;
-    //}
-    //else if (!$("#newSalary :input").val()) {
-    //    alert("Please enter the salary of the employee..");
-    //    return false;
-    //}
-    if (!$("#newName :input").isvalid()) {
-        alert("Please enter the name of the employee..");
+    var name = $('#newName :input').val();
+    var salary = $('#newSalary :input').val();
+
+    $('#inputInfo').css("color", "red");
+    if (name.length == 0) {
+        $('#inputInfo').text("* Please enter the name of the employee *");
+        $("#newName :input").focus();
         return false;
     }
-    else if (!$("#newSalary :input").valid()) {
-        alert("Please enter the salary of the employee..");
+    else if (!name.match(/^[a-zA-Z ]+$/)) {
+        $('#inputInfo').text("* Please use alphabets only for employees' name *");
+        $("#newName :input").focus();
+        return false;
+    }
+    else if (salary.length == 0) {
+        $('#inputInfo').text("* Please enter the salary of the employee *");
+        $("#newName :input").focus();
+        return false;
+    }
+    else if (!salary.match(/^[0-9]+$/)) {
+        $('#inputInfo').text("* Please use numbers only for employees' salary *");
+        $("#newName :input").focus();
         return false;
     }
     else
@@ -84,7 +119,7 @@ function validateAddInput() {
 }
 
 function show() {
-    if (infoDisplayed == 0) {
+    if (infoDisplayed == 0 || toRefresh == 1) {
         $.ajax({
             type: "GET",
             url: "http://localhost:50836/Service1.svc/GETDATA",
@@ -121,8 +156,10 @@ function show() {
                     cell4.appendChild(btnEdit);
 
                     var btnDelete = document.createElement("BUTTON");
+                    btnDelete.id = "btnDelete" + currentRow;
                     btnDelete.style.height = "25px";
                     btnDelete.style.width = "55px";
+                    btnDelete.onclick = function () { deleteRow(currentRow) };
                     var t = document.createTextNode("Delete");
                     btnDelete.appendChild(t);
                     cell4.appendChild(btnDelete);
@@ -136,18 +173,46 @@ function show() {
             }
         });
         infoDisplayed = 1;
+        toRefresh = 0;
     }
-    //$("#newName :input").blur(function (evt) {
-    //    evt.target.checkValidity();
-    //}).bind("invalid", function (event) {
-    //    alert("Please enter valid name of the employee..");
-    //});
+}
 
-    //$("#newSalary :input").blur(function (evt) {
-    //    evt.target.checkValidity();
-    //}).bind("invalid", function (event) {
-    //    alert("Please enter valid salary of the employee..");
-    //});
+function deleteRow(rowNo) {
+    if (confirm("Are you sure you want to delete this row?")) {
+        var cellIdDelete = $("#Cell" + rowNo + "1");
+
+        var empId = cellIdDelete[0].innerHTML;
+
+        $.ajax({
+            type: "POST",
+            url: "http://localhost:50836/Service1.svc/DeleteData",
+            data: JSON.stringify(empId),
+            processData: true,
+            contentType: 'application/json; charset=utf-8',
+            //success: deleteSucceeded,
+            success: function () {
+                var $tr = $(this).closest('tr');
+                $tr.find('td').fadeOut(1000, function () {
+                    $tr.remove();
+                });
+                $('#inputInfo').text("* Employee Info deleted.. *");
+            },
+            error: deleteFailed
+        })
+    }
+}
+
+function deleteSucceeded(data, status, jqXHR) {
+    $('#inputInfo').css("color", "green");
+    //$(this).closest("tr").remove();
+    //$(this).parent().parent().remove();
+    //$(this).parents("tr").remove();
+    //$('#inputInfo').text("* Employee Info deleted.. *");
+}
+
+function deleteFailed(msg) {
+    $('#inputInfo').css("color", "red");
+    $('#inputInfo').text("Error deleting data: " + msg.status + " - " + msg.statusText);
 }
 
 function editRow(rowNo) {
@@ -214,15 +279,18 @@ function saveRow(rowNo) {
         data: JSON.stringify(emp),
         processData: true,
         contentType: 'application/json; charset=utf-8',
-        success: addSucceeded,
-        error: addFailed
+        success: saveSucceeded,
+        error: saveFailed
     })
 }
 
-function addSucceeded(data, status, jqXHR) {
-    alert("Employee data modified successfully!");
+function saveSucceeded(data, status, jqXHR) {
+    $('#inputInfo').css("color", "green");
+    $('#inputInfo').text("* Employee Info saved.. *");
 }
 
-function addFailed(msg) {
-    alert("Error saving data: " + msg.status + " - " + msg.statusText);
+function saveFailed(msg) {
+    $('#inputInfo').css("color", "red");
+    $('#inputInfo').text("Error saving data: " + msg.status + " - " + msg.statusText);
 }
+
