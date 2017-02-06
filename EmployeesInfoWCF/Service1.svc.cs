@@ -87,9 +87,70 @@ namespace EmployeesInfoWCF
 			}
 		}
 
-		public void AddData()
+		public string AddData(Employee emp)
 		{
+			string newId = string.Empty;
+			string connectionString = @"Data Source = (LocalDB)\Local; Initial Catalog = EmployeeInfo; Integrated Security = True";
 
+			string query = "Insert Into Employees(Name, Salary) Values(@Name, @Salary)     Select top 1 Id from Employees order by 1 desc";
+
+			try
+			{
+				using (SqlConnection con = new SqlConnection(connectionString))
+				{
+					using (SqlCommand cmd = new SqlCommand(query, con))
+					{
+						cmd.Parameters.AddWithValue("@Name", emp.Name);
+						cmd.Parameters.AddWithValue("@Salary", emp.Salary);
+						con.Open();
+						SqlDataReader reader = cmd.ExecuteReader();
+						while (reader.Read())
+						{
+							newId = reader["Id"].ToString();
+						}
+						con.Close();
+					}
+				}
+			}
+			catch (SqlException)
+			{
+				throw;
+			}
+			catch (Exception)
+			{
+				throw;
+			}
+			return newId;
+		}
+
+		public void DeleteData(string empId)
+		{
+			string newId = string.Empty;
+			string connectionString = @"Data Source = (LocalDB)\Local; Initial Catalog = EmployeeInfo; Integrated Security = True";
+
+			string query = "Delete from Employees where Id=@Id";
+
+			try
+			{
+				using (SqlConnection con = new SqlConnection(connectionString))
+				{
+					using (SqlCommand cmd = new SqlCommand(query, con))
+					{
+						cmd.Parameters.AddWithValue("@Id", empId);
+						con.Open();
+						cmd.ExecuteNonQuery();
+						con.Close();
+					}
+				}
+			}
+			catch (SqlException ex)
+			{
+				throw;
+			}
+			catch (Exception)
+			{
+				throw;
+			}
 		}
 	}
 }

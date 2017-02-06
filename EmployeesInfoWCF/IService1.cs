@@ -24,7 +24,11 @@ namespace EmployeesInfoWCF
 
 		[OperationContract]
 		[WebInvoke(UriTemplate = "/AddData/")]
-		void AddData();
+		string AddData(Employee emp);
+
+		[OperationContract]
+		[WebInvoke(UriTemplate = "/DeleteData/")]
+		void DeleteData(string empId);
 	}
 
 
