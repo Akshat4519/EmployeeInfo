@@ -1,4 +1,4 @@
-html, body, h1, form, fieldset, input {
+﻿html, body, h1, form, fieldset, input {
     margin: 0;
     padding: 0;
     border: none;
@@ -98,3 +98,9 @@ td {
         font-size: 24px;
         font-family: Lucida Grande, Helvetica, Arial, sans-serif;
     }
+
+#inputInfo {
+    text-align: right;
+    font-size: 15px;
+    margin-right:25px;
+}
