@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 &nbsp;
 <html>
 <head>
@@ -9,7 +9,6 @@
     <script src="Scripts/jquery-3.1.1.min.js"></script>
     <script src="Scripts/logic.js"></script>
 </head>
-
 <body>
     <div id="lblEmployees" style="text-align:center" title="Click here to display Employee Info" onclick="displayInfo()">
         <h2>Click here to display Employee Info</h2>
@@ -34,20 +33,21 @@
                         Modify Info
                     </th>
                 </tr>
-                <tr>
-                    <td id="newId"></td>
-                    <td id="newName">
-                        <input type="text" pattern="[A-Za-z]" required/>
-                    </td>
-                    <td id="newSalary">
-                        <input type="number" required/>
-                    </td>
-                    <td>
-                        <button id="btnAddEmployee0" style="width:120px;height:25px">Add Employee</button>
-                    </td>
-                </tr>
             </thead>
+            <tr>
+                <td id="newId"></td>
+                <td id="newName">
+                    <input type="text" />
+                </td>
+                <td id="newSalary">
+                    <input type="number" />
+                </td>
+                <td>
+                    <button id="btnAddEmployee0" style="width:120px;height:25px">Add Employee</button>
+                </td>
+            </tr>
         </table>
+        <p id="inputInfo"></p>
     </div>
 </body>
 </html>
