@@ -10,6 +10,13 @@ namespace EmployeesInfoWCF
 	public interface IService1
 	{
 		[OperationContract]
+		[WebInvoke(Method="POST",
+			ResponseFormat = WebMessageFormat.Json,
+			RequestFormat = WebMessageFormat.Json,
+			UriTemplate = "/AuthenticateUser/")]
+		bool AuthenticateUser(User user);
+
+		[OperationContract]
 		[WebGet(RequestFormat = WebMessageFormat.Json,
 			ResponseFormat = WebMessageFormat.Json,
 			UriTemplate = "/GetData/")]
@@ -53,6 +60,24 @@ namespace EmployeesInfoWCF
 
 		[DataMember]
 		public string Salary
+		{
+			get;
+			set;
+		}
+	}
+
+	[DataContract]
+	public class User
+	{
+		[DataMember]
+		public string UserName
+		{
+			get;
+			set;
+		}
+
+		[DataMember]
+		public string Password
 		{
 			get;
 			set;

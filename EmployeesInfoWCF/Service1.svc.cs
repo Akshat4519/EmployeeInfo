@@ -13,6 +13,42 @@ namespace EmployeesInfoWCF
 	// NOTE: In order to launch WCF Test Client for testing this service, please select Service1.svc or Service1.svc.cs at the Solution Explorer and start debugging.
 	public class Service1 : IService1
 	{
+		public bool AuthenticateUser(User user)
+		{
+			var isAuthenticated = false;
+
+			string connectionString = @"Data Source = (LocalDB)\Local; Initial Catalog = EmployeeInfo; Integrated Security = True";
+
+			string query = "Select * from Users where UserName=@UserName and Password=@Password";
+
+			try
+			{
+				using (SqlConnection con = new SqlConnection(connectionString))
+				{
+					using (SqlCommand cmd = new SqlCommand(query, con))
+					{
+						con.Open();
+						cmd.Parameters.AddWithValue("@UserName", user.UserName);
+						cmd.Parameters.AddWithValue("@Password", user.Password);
+						SqlDataReader reader = cmd.ExecuteReader();
+						while (reader.Read()) { isAuthenticated = true; }
+						con.Close();
+					}
+				}
+			}
+			catch (SqlException)
+			{
+				isAuthenticated = false;
+				throw;
+			}
+			catch (Exception)
+			{
+				isAuthenticated = false;
+				throw;
+			}
+			return isAuthenticated;
+		}
+
 		public List<Employee> GetEmpData()
 		{
 			string connectionString = @"Data Source = (LocalDB)\Local; Initial Catalog = EmployeeInfo; Integrated Security = True";
@@ -152,5 +188,6 @@ namespace EmployeesInfoWCF
 				throw;
 			}
 		}
+
 	}
 }
