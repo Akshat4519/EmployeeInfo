@@ -1,4 +1,4 @@
-/// <reference path="jquery-3.1.1.min.js" />
+﻿/// <reference path="jquery-3.1.1.min.js" />
 var infoDisplayed = 0;
 var toRefresh = 0;
 var finalRowCount = 0;
