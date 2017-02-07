@@ -17,7 +17,7 @@ namespace EmployeesInfoWCF
 		{
 			string connectionString = @"Data Source = (LocalDB)\Local; Initial Catalog = EmployeeInfo; Integrated Security = True";
 			
-			string query = "Select * from Employees";
+			string query = "Select * from Employees order by Id";
 
 			List<Employee> emp = new List<Employee>();
 
