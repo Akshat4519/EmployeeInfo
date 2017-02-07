@@ -1,4 +1,4 @@
-﻿/// <reference path="jquery-3.1.1.min.js" />
+/// <reference path="jquery-3.1.1.min.js" />
 var infoDisplayed = 0;
 var toRefresh = 0;
 var finalRowCount = 0;
@@ -189,14 +189,7 @@ function deleteRow(rowNo) {
             data: JSON.stringify(empId),
             processData: true,
             contentType: 'application/json; charset=utf-8',
-            //success: deleteSucceeded,
-            success: function () {
-                var $tr = $(this).closest('tr');
-                $tr.find('td').fadeOut(1000, function () {
-                    $tr.remove();
-                });
-                $('#inputInfo').text("* Employee Info deleted.. *");
-            },
+            success: deleteSucceeded,
             error: deleteFailed
         })
     }
@@ -204,10 +197,13 @@ function deleteRow(rowNo) {
 
 function deleteSucceeded(data, status, jqXHR) {
     $('#inputInfo').css("color", "green");
-    //$(this).closest("tr").remove();
-    //$(this).parent().parent().remove();
-    //$(this).parents("tr").remove();
-    //$('#inputInfo').text("* Employee Info deleted.. *");
+
+    $("#tableEmployees tr").not(':last').remove();
+
+    toRefresh = 1;
+    show();
+
+    $('#inputInfo').text("* Employee Info deleted.. *");
 }
 
 function deleteFailed(msg) {
