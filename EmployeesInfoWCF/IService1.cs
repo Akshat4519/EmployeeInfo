@@ -10,9 +10,9 @@ namespace EmployeesInfoWCF
 	public interface IService1
 	{
 		[OperationContract]
-		[WebInvoke(Method="POST",
-			ResponseFormat = WebMessageFormat.Json,
+		[WebInvoke(Method = "POST", 
 			RequestFormat = WebMessageFormat.Json,
+			ResponseFormat = WebMessageFormat.Json,
 			UriTemplate = "/AuthenticateUser/")]
 		bool AuthenticateUser(User user);
 

@@ -1,11 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
-using System.Linq;
-using System.Runtime.Serialization;
-using System.ServiceModel;
-using System.ServiceModel.Web;
-using System.Text;
 
 namespace EmployeesInfoWCF
 {
@@ -15,7 +10,7 @@ namespace EmployeesInfoWCF
 	{
 		public bool AuthenticateUser(User user)
 		{
-			var isAuthenticated = false;
+			bool isAuthenticated = false;
 
 			string connectionString = @"Data Source = (LocalDB)\Local; Initial Catalog = EmployeeInfo; Integrated Security = True";
 
@@ -47,6 +42,7 @@ namespace EmployeesInfoWCF
 				throw;
 			}
 			return isAuthenticated;
+			//return System.Runtime.Serialization.Json(new { isAuthenticated });
 		}
 
 		public List<Employee> GetEmpData()
