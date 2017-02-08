@@ -66,10 +66,6 @@ td {
     padding-bottom: 10px;
 }
 
-#lblEmployees {
-    cursor: pointer;
-}
-
 #tableEmployees {
     table-layout: auto;
 }

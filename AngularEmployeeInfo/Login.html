@@ -1,6 +1,7 @@
 ﻿<!DOCTYPE html>
 <html>
 <head>
+    <link rel="icon" href="/Icons/favicon.ico" type="image/x-icon">
     <title>Employee Info Login</title>
     <link href="CSS/LoginStyleSheet.css" rel="stylesheet" />
     <script src="Scripts/jquery-3.1.1.min.js"></script>
@@ -8,8 +9,7 @@
 </head>
 <body>
     <h2 style="text-align:center">Login Form</h2>
-
-    <form>
+    <div id="form">
         <div class="imgcontainer">
             <img src="Images/img_avatar2.png" alt="Avatar" class="avatar" />
         </div>
@@ -22,8 +22,9 @@
             <input type="password" placeholder="Enter Password" name="psw" required>
 
             <button onclick="AuthenticateUser()">Login</button>
-        </div>
-    </form>
 
+            <p id="inputInfo" style="height:5px"></p>
+        </div>
+    </div>
 </body>
 </html>

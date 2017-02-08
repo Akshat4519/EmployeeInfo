@@ -3,6 +3,11 @@ var infoDisplayed = 0;
 var toRefresh = 0;
 var finalRowCount = 0;
 $(document).ready(function () {
+    if (!sessionStorage.validUser) {
+        window.location("Login.html");
+        return;
+    }
+    displayInfo();
     this.finalRowCount = $('#tableEmployees').length - 1;
 
     $("#btnAddEmployee0").bind('click', addEmployee);
@@ -10,7 +15,6 @@ $(document).ready(function () {
 
 
 function displayInfo() {
-    $("#lblEmployees").hide();
     $("#registration").slideDown();
     show();
 }
