@@ -2,18 +2,18 @@
 &nbsp;
 <html>
 <head>
+    <link rel="icon" href="/Icons/favicon.ico" type="image/x-icon">
     <title>Employee Info</title>
     <link href="CSS/StyleSheet.css" rel="stylesheet" />
-    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.0/jquery.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.6/angular.min.js"></script>
+    <script src="Scripts/jquery-3.1.1.min.js"></script>
+    <script src="Scripts/logic.js"></script>
 </head>
-
-<body ng-app="employeeApp">
-    <div id="registration">
-        <div id="lblEmployees" onclick="show()">
-            <h2 style="text-align:center">Employee Info</h2>
+<body>
+    <div id="registration" style="display:none">
+        <div style="text-align:center;padding-top:1em; padding-bottom:1em">
+            <h1>Employee Info</h1>
         </div>
-        <table id="tableEmployees" cellspacing=2 cellpadding=5 border="1">
+        <table id="tableEmployees" border="1">
             <thead>
                 <tr style="font-size:18px;">
                     <th style="width:40px;padding-left:10px">
@@ -29,68 +29,21 @@
                         Modify Info
                     </th>
                 </tr>
-                <tr>
-                    <td>
-                    </td>
-                    <td>
-                        <input type="text" id="newName" />
-                    </td>
-                    <td>
-                        <input type="text" id="newSalary" />
-                    </td>
-                    <td>
-                        <input type="button" id="btnAddEmployee" value="Add Employee" style="width:100px"/>
-                    </td>
-                </tr>
             </thead>
+            <tr>
+                <td id="newId"></td>
+                <td id="newName">
+                    <input type="text" placeholder="Name"/>
+                </td>
+                <td id="newSalary">
+                    <input type="number" placeholder="Salary" />
+                </td>
+                <td>
+                    <button id="btnAddEmployee0" style="width:120px;height:25px">Add Employee</button>
+                </td>
+            </tr>
         </table>
+        <p id="inputInfo" style="height:5px"></p>
     </div>
-    <script>
-        var employeeApp = angular.module('employeeApp', []);
-
-        var infoDisplayed = 0;
-        function show() {
-            if (infoDisplayed == 0) {
-                $.ajax({
-                    type: "GET",
-                    url: "http://localhost:50836/Service1.svc/GETDATA",
-                    contentType: "application/json; charset=utf-8",
-                    dataType: "json",
-                    success: function (msg) {
-                        var table = document.getElementById("tableEmployees");
-
-                        $.each(msg, function (index, element) {
-                            var row = table.insertRow(table.rows.length - 1);
-                            var cell1 = row.insertCell(0);
-                            var cell2 = row.insertCell(1);
-                            var cell3 = row.insertCell(2);
-                            var cell4 = row.insertCell(3);
-                            cell1.innerHTML = element.Id;
-                            cell2.innerHTML = element.Name;
-                            cell3.innerHTML = element.Salary;
-
-                            var btnEdit = document.createElement("BUTTON");
-                            btnEdit.style.height = "25px";
-                            btnEdit.style.width = "50px";
-                            var t = document.createTextNode("Edit");
-                            btnEdit.appendChild(t);
-                            cell4.appendChild(btnEdit);
-
-                            var btnDelete = document.createElement("BUTTON");
-                            btnDelete.style.height = "25px";
-                            btnDelete.style.width = "60px";
-                            var t = document.createTextNode("Delete");
-                            btnDelete.appendChild(t);
-                            cell4.appendChild(btnDelete);
-                        });
-                    },
-                    error: function (msg) {
-                        alert("Error: " + msg.status + " - " + msg.statusText);
-                    }
-                });
-                infoDisplayed = 1;
-            }
-        }
-    </script>
 </body>
 </html>
