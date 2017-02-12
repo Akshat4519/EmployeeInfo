@@ -100,3 +100,40 @@ td {
     font-size: 15px;
     margin-right: 25px;
 }
+
+#header {
+    display: inline-block;
+    width: 70%;
+    text-align: center;
+    margin-left: 90px;
+    padding-top: 1em;
+    padding-bottom: 1em;
+}
+
+#logoutSpan {
+    display: inline-block;
+}
+
+#btnLogout {
+    height: 25px;
+    font-size: 12px;
+    line-height: 1.5;
+    border-radius: 3px;
+    display: inline-block;
+    margin-bottom: 10px;
+    font-weight: 400;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    touch-action: manipulation;
+    cursor: pointer;
+    user-select: none;
+    border: 1px solid transparent;
+    overflow: visible;
+}
+
+    #btnLogout:hover {
+        color: #333;
+        background-color: #e6e6e6;
+        border-color: #adadad;
+    }

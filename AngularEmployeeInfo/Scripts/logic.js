@@ -3,7 +3,7 @@ var infoDisplayed = 0;
 var toRefresh = 0;
 var finalRowCount = 0;
 $(document).ready(function () {
-    if (!sessionStorage.validUser) {
+    if (sessionStorage.validUser == "false" || sessionStorage.validUser == undefined) {
         window.location("Login.html");
         return;
     }
@@ -11,8 +11,14 @@ $(document).ready(function () {
     this.finalRowCount = $('#tableEmployees').length - 1;
 
     $("#btnAddEmployee0").bind('click', addEmployee);
+    $("#btnLogout").click(endSession);
 });
 
+function endSession() {
+    sessionStorage.validUser = false;
+    window.location("Login.html");
+    return;
+}
 
 function displayInfo() {
     $("#registration").slideDown();
@@ -316,4 +322,3 @@ function saveFailed(msg) {
     $('#inputInfo').text("Error saving data: " + msg.status + " - " + msg.statusText);
     $("#inputInfo").show();
 }
-

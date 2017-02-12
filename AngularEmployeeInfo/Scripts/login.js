@@ -1,4 +1,16 @@
-﻿function AuthenticateUser() {
+﻿$(document).ready(function () {
+    if (sessionStorage.validUser == "true") {
+        window.location("Index.html");
+        return;
+    }
+    $("input").keypress(function (e) {
+        if (e.keyCode == 13) {
+            AuthenticateUser();
+        }
+    });
+});
+
+function AuthenticateUser() {
     $('#inputInfo').hide();
 
     var UserName = $("input[name='uname']").val();
@@ -21,15 +33,21 @@
                     window.location("Index.html");
                 }
                 else {
-                    $('#inputInfo').css("color", "red");
-                    $('#inputInfo').text("* Invalid UserName/Password *");
-                    $('#inputInfo').fadeIn(500);
+                    $("#inputInfo").css("color", "red");
+                    $("#inputInfo").text("* Invalid UserName/Password *");
+                    $("#inputInfo").fadeIn(500);
+                    $("[name='uname']").val("");
+                    $("[name='psw']").val("");
+                    $("[name='uname']").focus();
                 }
             },
             error: function (msg) {
                 $('#inputInfo').css("color", "red");
                 $('#inputInfo').text("* " + msg + " *");
                 $('#inputInfo').fadeIn(5000);
+                $("[name='uname']").val("");
+                $("[name='psw']").val("");
+                $("[name='uname']").focus();
             }
         })
     }
@@ -37,73 +55,14 @@
         $('#inputInfo').css("color", "red");
         $('#inputInfo').text("* Please enter Username *");
         $('#inputInfo').fadeIn(500);
+        $("[name='uname']").focus();
         return;
     }
     else {
         $('#inputInfo').css("color", "red");
         $('#inputInfo').text("* Please enter Password *");
         $('#inputInfo').fadeIn(500);
+        $("[name='psw']").focus();
         return;
     }
-    feedLocalStorage();
-}
-
-function feedLocalStorage() {
-    if (!sessionStorage.length) {
-        // Ask other tabs for session storage
-        localStorage.validUser = false;
-    };
-
-    window.addEventListener('storage', function (event) {
-
-        //console.log('storage event', event);
-
-        if (event.key == 'validUser') {
-            // Some tab asked for the sessionStorage -> send it
-
-            localStorage.setItem('sessionStorage', JSON.stringify(sessionStorage));
-            localStorage.removeItem('sessionStorage');
-
-        } else if (event.key == 'sessionStorage' && !sessionStorage.length) {
-            // sessionStorage is empty -> fill it
-
-            var data = JSON.parse(event.newValue),
-                        value;
-
-            for (key in data) {
-                sessionStorage.setItem(key, data[key]);
-            }
-
-            //showSessionStorage();
-        }
-    });
-
-    window.onbeforeunload = function () {
-        //sessionStorage.clear();
-    };
-
-
-    /* This code is only for the UI in the demo, it's not part of the sulotion */
-
-    //var el;
-
-    //function showSessionStorage() {
-    //    el.innerHTML = sessionStorage.length ? JSON.stringify(sessionStorage) : 'sessionStorage is empty';
-    //}
-
-    //window.addEventListener('load', function () {
-    //    el = document.getElementById('stData');
-    //    showSessionStorage();
-
-    //    document.getElementById('btnSet').addEventListener('click', function () {
-    //        sessionStorage.setItem('token', '123456789');
-    //        showSessionStorage();
-    //    })
-
-    //    document.getElementById('btnClear').addEventListener('click', function () {
-    //        sessionStorage.clear();
-    //        showSessionStorage();
-    //    })
-    //})
-
 }

@@ -6,12 +6,18 @@
     <title>Employee Info</title>
     <link href="CSS/StyleSheet.css" rel="stylesheet" />
     <script src="Scripts/jquery-3.1.1.min.js"></script>
+    <script src="Scripts/persistentSessionStorage.js"></script>
     <script src="Scripts/logic.js"></script>
 </head>
 <body>
     <div id="registration" style="display:none">
-        <div style="text-align:center;padding-top:1em; padding-bottom:1em">
+        <div id="header">
             <h1>Employee Info</h1>
+        </div>
+        <div id="logoutSpan">
+            <button type="button" id="btnLogout">
+                <span class="glyphicon glyphicon-log-out"></span> Log out
+            </button>
         </div>
         <table id="tableEmployees" border="1">
             <thead>
@@ -33,7 +39,7 @@
             <tr>
                 <td id="newId"></td>
                 <td id="newName">
-                    <input type="text" placeholder="Name"/>
+                    <input type="text" placeholder="Name" />
                 </td>
                 <td id="newSalary">
                     <input type="number" placeholder="Salary" />
